@@ -1,4 +1,4 @@
-import RouteCostCalculater from '../../molecules/route-cost-calculater'
+import RouteCostCalculater from '../route-cost-calculater'
 
 type DeliveryCalculaterProps = {}
 const DeliveryCalculater: React.FC<DeliveryCalculaterProps> = () => {

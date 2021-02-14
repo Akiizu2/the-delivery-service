@@ -8,6 +8,23 @@
 .selectorWrapper {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
+
+  & select {
+    margin-bottom: 8px;
+  }
+}
+
+.buttonWrapper {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: row;
+
+  & button {
+    &:not(:first-of-type) {
+      margin-left: 8px;
+    }
+  }
 }

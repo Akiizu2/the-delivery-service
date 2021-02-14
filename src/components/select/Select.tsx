@@ -4,6 +4,7 @@ import styles from './select.module.scss'
 export type SelectOptions = {
   title: string
   value: string
+  disabled?: boolean
 }
 
 export type SelectProps = {
@@ -14,7 +15,7 @@ const Select: React.FC<SelectProps> = ({ items, ...selectAttr }) => {
   return (
     <select className={styles.select} {...selectAttr}>
       {items.map((item) => (
-        <option key={item.title} value={item.value}>
+        <option disabled={item.disabled} key={item.title} value={item.value}>
           {item.title}
         </option>
       ))}

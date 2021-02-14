@@ -1,1 +1,1 @@
-export { default } from './DeliveryCalculatorContainer'
+export { default } from './DeliveryCalculater'
