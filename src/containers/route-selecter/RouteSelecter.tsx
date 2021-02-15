@@ -9,7 +9,7 @@ import styles from './routeSelecter.module.scss'
 import data from '../../data/town.json'
 import { getTownsFromList } from '../../helpers/town'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTown, selectTown } from '../../stores/user/action'
+import { addTown, selectTown, removeLastTown } from '../../stores/user/action'
 
 const townListOptions: SelectOptions[] = [
   { title: '---', value: NONE_SELECT_VALUE, disabled: true },
@@ -32,8 +32,8 @@ const RouteSelecter: React.FC<RouteSelecterProps> = () => {
     dispatch(addTown())
   }, [dispatch])
 
-  const removeLatestTown = useCallback(() => {
-    dispatch(removeLatestTown())
+  const handleRemoveLastTown = useCallback(() => {
+    dispatch(removeLastTown())
   }, [dispatch])
 
   const handleSelectTown = useCallback(
@@ -54,7 +54,10 @@ const RouteSelecter: React.FC<RouteSelecterProps> = () => {
         <Button disabled={!isSelectedLastTown} onClick={handleAddTown}>
           Add Town
         </Button>
-        <Button disabled={selectedTown.length < 3} onClick={removeLatestTown}>
+        <Button
+          disabled={selectedTown.length < 3}
+          onClick={handleRemoveLastTown}
+        >
           Remove Last Town
         </Button>
       </div>
