@@ -1,12 +1,13 @@
-import DeliveryCalculatorContainer from './containers/delivery-calculater'
-import CommonLayout from './layouts/common/CommonLayout'
+import MainPage from './pages/main'
+
+import { Provider } from 'react-redux'
+import { store } from './stores/reducer'
 
 function App() {
   return (
-    <CommonLayout>
-      <h1>Delivery Service</h1>
-      <DeliveryCalculatorContainer />
-    </CommonLayout>
+    <Provider store={store}>
+      <MainPage />
+    </Provider>
   )
 }
 

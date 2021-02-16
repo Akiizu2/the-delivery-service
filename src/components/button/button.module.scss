@@ -1,0 +1,22 @@
+.button {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 0;
+  outline: none;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:disabled {
+    background-color: var(--grey);
+
+    &:hover {
+      opacity: inherit;
+      cursor: auto;
+    }
+  }
+}

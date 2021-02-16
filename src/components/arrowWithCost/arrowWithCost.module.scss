@@ -1,0 +1,15 @@
+.arrowWithCost {
+  position: relative;
+  min-width: 70px;
+  height: 2px;
+  background-color: var(--primary);
+}
+
+.arrowCost {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--white);
+  padding: 0 4px;
+}

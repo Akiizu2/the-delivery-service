@@ -1,0 +1,10 @@
+.input {
+  padding: 8px 16px;
+  max-width: 120px;
+  border: var(--primary) solid 1px;
+  border-radius: 5px;
+
+  &:disabled {
+    border-color: var(--grey);
+  }
+}

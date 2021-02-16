@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.routeContainer {
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.routeCostTable {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.routesWrapper {
+  padding: 8px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.arrowWrapper {
+  margin: 0 16px;
+}
