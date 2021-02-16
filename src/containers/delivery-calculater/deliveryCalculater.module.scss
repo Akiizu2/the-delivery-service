@@ -1,0 +1,12 @@
+.deliveryCalculater {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionWrapper {
+  margin-bottom: 32px;
+  border: transparent solid 1px;
+  padding: 16px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 1px var(--grey);
+}

@@ -11,6 +11,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "classnames": "^2.2.6",
+    "d3": "^6.5.0",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -27,6 +28,9 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "rules": {
+      "no-extra-parens": "off"
+    },
     "extends": [
       "react-app",
       "react-app/jest"
@@ -46,6 +50,8 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
+    "@types/d3": "^6.3.0",
+    "@types/react-redux": "^7.1.16",
     "prettier": "2.2.1"
   }
 }
