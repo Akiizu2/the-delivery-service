@@ -1,10 +1,21 @@
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .costWrapper {
   margin-top: 8px;
   font-size: 16px;
   font-weight: bold;
+  color: var(--primary);
+}
+
+.routeSelectorWrapper {
+  margin-top: 8px;
+}
+
+.helperText {
+  margin-top: 8px;
 }

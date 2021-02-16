@@ -1,57 +1,41 @@
-import { useCallback, useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import Arrow from '../../components/arrow'
 import Button from '../../components/button'
 import Select from '../../components/select'
-import type { SelectOptions } from '../../components/select/Select'
-import type { RootState } from '../../stores/reducer'
 import { NONE_SELECT_VALUE } from '../../stores/user/intialState'
 import styles from './routeSelecter.module.scss'
-import data from '../../data/town.json'
-import { getTownsFromList } from '../../helpers/town'
-import { useDispatch, useSelector } from 'react-redux'
-import { addTown, selectTown, removeLastTown } from '../../stores/user/action'
+import { townListOptions } from '../../data/town'
+import useRouteCostCalculater from '../route-cost-calculater/routeCostCalculater.hook'
+import type { Route } from '../../helpers/town'
+import { COST_CODE } from '../../helpers/town'
 
-const townListOptions: SelectOptions[] = [
-  { title: '---', value: NONE_SELECT_VALUE, disabled: true },
-  ...getTownsFromList(data.list).map((town) => ({
-    title: town,
-    value: town,
-  })),
-]
+type RouteSelecterProps = {
+  providedTown: Route[]
+}
 
-type RouteSelecterProps = {}
-
-const RouteSelecter: React.FC<RouteSelecterProps> = () => {
-  const selectedTown = useSelector<RootState, string[]>(
-    (state) => state.userReducers.selectedTown
-  )
-
-  const dispatch = useDispatch()
-
-  const handleAddTown = useCallback(() => {
-    dispatch(addTown())
-  }, [dispatch])
-
-  const handleRemoveLastTown = useCallback(() => {
-    dispatch(removeLastTown())
-  }, [dispatch])
-
-  const handleSelectTown = useCallback(
-    (index: number) => (e: React.ChangeEvent<HTMLSelectElement>) => {
-      dispatch(selectTown(index, e.target.value))
-    },
-    [dispatch]
-  )
+const RouteSelecter: React.FC<RouteSelecterProps> = ({ providedTown }) => {
+  const {
+    selectedTown,
+    handleRemoveLastTown,
+    handleAddTown,
+    handleSelectTown,
+    cost,
+  } = useRouteCostCalculater(providedTown)
 
   const isSelectedLastTown = useMemo(
     () => selectedTown[selectedTown.length - 1] !== NONE_SELECT_VALUE,
     [selectedTown]
   )
 
+  const isNoSuchRoute = useMemo(() => cost === COST_CODE.NO_SUCH_ROUTE, [cost])
+
   return (
     <div className={styles.container}>
       <div className={styles.buttonWrapper}>
-        <Button disabled={!isSelectedLastTown} onClick={handleAddTown}>
+        <Button
+          disabled={!isSelectedLastTown || isNoSuchRoute}
+          onClick={handleAddTown}
+        >
           Add Town
         </Button>
         <Button
@@ -63,14 +47,14 @@ const RouteSelecter: React.FC<RouteSelecterProps> = () => {
       </div>
       <div className={styles.selectorWrapper}>
         {selectedTown.map((town, index) => (
-          <>
+          <Fragment key={`${town}-${index}`}>
             {index > 0 && <Arrow />}
             <Select
               onChange={handleSelectTown(index)}
               items={townListOptions}
               value={town}
             />
-          </>
+          </Fragment>
         ))}
       </div>
     </div>

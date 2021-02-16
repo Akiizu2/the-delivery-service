@@ -11,14 +11,10 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
-
-  & select {
-    margin-bottom: 8px;
-  }
 }
 
 .buttonWrapper {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   display: flex;
   flex-direction: row;
 

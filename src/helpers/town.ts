@@ -25,12 +25,13 @@ export type PossibleRouteFunc = ({
   providedRoutes,
   route,
   maxStop,
-}: PossibleRouteArgs) => number
+}: PossibleRouteArgs) => { count: number; mathRoutes: string[][] }
 
 const isSameRoute = (route: Route, targetRoute: Route): boolean =>
   route.from === targetRoute.from && route.to === targetRoute.to
 
-const routeToRouteString = (route: Route): string => `${route.from}${route.to}`
+export const routeToRouteString = (route: Route): string =>
+  `${route.from}${route.to}`
 
 export const getTownsFromList = (list: string[]): string[] =>
   list.reduce((list: string[], current: string): string[] => {
@@ -105,17 +106,31 @@ export const getTownWithAdjacent = (providedRoutes: Route[]): Route[] =>
     }
   })
 
-const findPathCountUntilEnd = (
-  currentPath: Route,
-  to: string,
-  pathCount: number,
-  townWithAdjacent: Route[],
-  usedRoute: string[] = [],
+type findPathCountUntilEndArgument = {
+  currentPath: Route
+  to: string
+  pathCount: number
+  townWithAdjacent: Route[]
+  foundPathCallback?: (mathRoute: string[]) => void
+  usedRoute?: string[]
+  maxStop?: number // minus value mean don't have max stop
+  isAllowTwiceRoute?: boolean
+  maxCost?: number // minus value mean don't have max cost
+  currentCost?: number
+}
+
+const findPathCountUntilEnd = ({
+  currentPath,
+  to,
+  pathCount,
+  townWithAdjacent,
+  foundPathCallback,
+  usedRoute = [],
   maxStop = -1, // minus value mean don't have max stop
   isAllowTwiceRoute = false,
   maxCost = -1, // minus value mean don't have max cost
-  currentCost = 0
-): number => {
+  currentCost = 0,
+}: findPathCountUntilEndArgument): number => {
   // Recursive function to find the possible path from adjacent nodes
   function checkOnAdjacentTown() {
     currentPath.adjacentTown?.forEach((town) => {
@@ -129,17 +144,18 @@ const findPathCountUntilEnd = (
       )
 
       if (mathRoute) {
-        pathCount = findPathCountUntilEnd(
-          mathRoute,
+        pathCount = findPathCountUntilEnd({
+          currentPath: mathRoute,
           to,
           pathCount,
-          updatedTown,
+          townWithAdjacent: updatedTown,
           usedRoute,
           maxStop,
           isAllowTwiceRoute,
           maxCost,
-          currentCost
-        )
+          currentCost,
+          foundPathCallback,
+        })
       }
       if (!isAllowTwiceRoute) {
         town.visitedCount = 0
@@ -176,6 +192,7 @@ const findPathCountUntilEnd = (
 
   if (isOnDestination) {
     pathCount += 1
+    foundPathCallback?.(usedRoute)
   } else if (isCheckRequired || isAllowTwiceRoute) {
     checkOnAdjacentTown()
   }
@@ -188,7 +205,6 @@ export const findPossibleRoute: PossibleRouteFunc = ({
   route,
   maxStop,
   isAllowTwiceRoute,
-  maxCost,
 }) => {
   const townWithAdjacent = getTownWithAdjacent(providedRoutes)
 
@@ -196,25 +212,23 @@ export const findPossibleRoute: PossibleRouteFunc = ({
     (town) => town.from === route.from
   )
   let pathCount = 0
-  let usedRoute: string[] = []
+  let matchRoutes: string[][] = []
 
   startPoints.forEach((startPoint) => {
-    usedRoute = []
-
-    pathCount = findPathCountUntilEnd(
-      startPoint,
-      route.to,
+    pathCount = findPathCountUntilEnd({
+      currentPath: startPoint,
+      to: route.to,
       pathCount,
       townWithAdjacent,
-      usedRoute,
       maxStop,
-      isAllowTwiceRoute,
-      maxCost
-    )
+      foundPathCallback: (route) => {
+        matchRoutes.push(route)
+      },
+    })
     if (!isAllowTwiceRoute) {
       townWithAdjacent.forEach((town) => (town.visitedCount = 0))
     }
   })
 
-  return pathCount
+  return { count: pathCount, mathRoutes: matchRoutes }
 }

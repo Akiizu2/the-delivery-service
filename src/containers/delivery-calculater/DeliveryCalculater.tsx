@@ -1,33 +1,10 @@
 import { useState } from 'react'
-import { findPossibleRoute, getRouteList, Route } from '../../helpers/town'
+import { getRouteList, Route } from '../../helpers/town'
 import RouteCostCalculater from '../route-cost-calculater'
-import data from '../../data/town.json'
-
-console.log(
-  'E -> D',
-  findPossibleRoute({
-    providedRoutes: getRouteList(data.list),
-    route: { from: 'E', to: 'D' },
-    maxStop: 4,
-  })
-)
-
-console.log(
-  'E -> E',
-  findPossibleRoute({
-    providedRoutes: getRouteList(data.list),
-    route: { from: 'E', to: 'E' },
-  })
-)
-
-console.log(
-  'E -> E ( Bonus )',
-  findPossibleRoute({
-    providedRoutes: getRouteList(data.list),
-    route: { from: 'E', to: 'E' },
-    isAllowTwiceRoute: true,
-  })
-)
+import data from '../../source/town.json'
+import PossibilityRouteCalculater from '../possiblity-route-calculater/PossiblityRouteCalculater'
+import styles from './deliveryCalculater.module.scss'
+import ProvidedRoutes from '../providedRoutes'
 
 type DeliveryCalculaterProps = {}
 
@@ -35,8 +12,16 @@ const DeliveryCalculater: React.FC<DeliveryCalculaterProps> = () => {
   const [providedTown] = useState<Route[]>(getRouteList(data.list))
 
   return (
-    <div>
-      <RouteCostCalculater providedTown={providedTown} />
+    <div className={styles.deliveryCalculater}>
+      <div className={styles.sectionWrapper}>
+        <ProvidedRoutes providedTown={providedTown} />
+      </div>
+      <div className={styles.sectionWrapper}>
+        <RouteCostCalculater providedTown={providedTown} />
+      </div>
+      <div className={styles.sectionWrapper}>
+        <PossibilityRouteCalculater providedTown={providedTown} />
+      </div>
     </div>
   )
 }
